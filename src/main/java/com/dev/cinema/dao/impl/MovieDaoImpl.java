@@ -48,5 +48,6 @@ public class MovieDaoImpl implements MovieDao {
             LOGGER.warn("Error while retrieving all movies.", e);
             throw new DataProcessingException("Error while retrieving all movies.", e);
         }
+        // test
     }
 }
