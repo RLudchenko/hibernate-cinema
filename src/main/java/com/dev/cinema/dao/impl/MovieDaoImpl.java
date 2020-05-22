@@ -15,12 +15,12 @@ public class MovieDaoImpl implements MovieDao {
     @Override
     public Movie add(Movie movie) {
         Transaction transaction = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = null;
         try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            Long id = (Long) session.save(movie);
+            session.save(movie);
             transaction.commit();
-            movie.setId(id);
             return movie;
         } catch (Exception e) {
             if (transaction != null) {
