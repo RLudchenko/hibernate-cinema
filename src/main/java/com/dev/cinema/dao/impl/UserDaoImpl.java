@@ -34,8 +34,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("There was an error adding "
-                    + session, e);
+            throw new DataProcessingException("There was an error adding ", e);
         } finally {
             session.close();
         }
@@ -47,8 +46,7 @@ public class UserDaoImpl implements UserDao {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<User> criteriaQuery = cb.createQuery(User.class);
             Root<User> root = criteriaQuery.from(User.class);
-            Predicate predicate = cb
-                    .equal(root.get("email"), email);
+            Predicate predicate = cb.equal(root.get("email"), email);
             criteriaQuery.select(root).where(predicate);
             return Optional.ofNullable(session.createQuery(criteriaQuery).uniqueResult());
         } catch (Exception e) {

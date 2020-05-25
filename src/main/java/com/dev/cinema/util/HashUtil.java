@@ -30,7 +30,7 @@ public class HashUtil {
             }
 
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
         return hashedPassword.toString();
     }
