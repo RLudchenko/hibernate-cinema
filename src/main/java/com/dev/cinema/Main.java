@@ -3,11 +3,16 @@ package com.dev.cinema;
 import com.dev.cinema.lib.Injector;
 import com.dev.cinema.model.CinemaHall;
 import com.dev.cinema.model.Movie;
+import com.dev.cinema.model.MovieSession;
 import com.dev.cinema.model.User;
 import com.dev.cinema.security.AuthenticationService;
 import com.dev.cinema.service.CinemaHallService;
 import com.dev.cinema.service.MovieService;
+import com.dev.cinema.service.MovieSessionService;
+import com.dev.cinema.service.ShoppingCartService;
 import com.dev.cinema.service.UserService;
+import java.time.LocalDateTime;
+import java.time.Month;
 import javax.naming.AuthenticationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +23,6 @@ public class Main {
 
     public static void main(String[] args) throws AuthenticationException {
         MovieService movieService = (MovieService) INJECTOR.getInstance(MovieService.class);
-        UserService userService = (UserService) INJECTOR.getInstance(UserService.class);
 
         Movie movie = new Movie();
         movie.setTitle("Terminator 2");
@@ -36,12 +40,23 @@ public class Main {
                 (CinemaHallService) INJECTOR.getInstance(CinemaHallService.class);
         cinemaHallService.add(blueHall);
         cinemaHallService.add(greenHall);
+        //registration.registration("John123@ll.com", "1");
+        MovieSession movieSession = new MovieSession();
+        movieSession.setCinemaHall(greenHall);
+        movieSession.setMovie(movie);
+        movieSession.setSessionTime(LocalDateTime.of(2020, Month.MAY, 30, 15, 30));
+        MovieSessionService movieSessionService =
+                (MovieSessionService) INJECTOR.getInstance(MovieSessionService.class);
+        movieSessionService.add(movieSession);
 
-        User john = new User();
+        UserService userService = (UserService) INJECTOR.getInstance(UserService.class);
 
         AuthenticationService registration =
                 (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
-        registration.registration("John123@ll.com", "1");
+        User john = registration.registration("John123@ll.com", "1");
         registration.login("John123@ll.com", "1");
+        ShoppingCartService shoppingCartService =
+                (ShoppingCartService) INJECTOR.getInstance(ShoppingCartService.class);
+        shoppingCartService.addSession(movieSession, john);
     }
 }
