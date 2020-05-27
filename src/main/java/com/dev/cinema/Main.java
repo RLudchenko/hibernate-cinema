@@ -50,7 +50,6 @@ public class Main {
         movieSessionService.add(movieSession);
 
         UserService userService = (UserService) INJECTOR.getInstance(UserService.class);
-        User user1 = userService.findByEmail("John123@ll.com");
 
         AuthenticationService registration =
                 (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
