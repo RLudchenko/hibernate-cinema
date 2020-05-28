@@ -16,7 +16,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email")
+    @Column(unique = true)
     private String email;
     private String password;
     private byte[] salt;
@@ -81,6 +81,7 @@ public class User {
     @Override
     public String toString() {
         return "User{"
+                + "id=" + id
                 + ", email='" + email + '\''
                 + ", password='" + password + '\''
                 + ", salt=" + Arrays.toString(salt)

@@ -10,4 +10,6 @@ public interface ShoppingCartService {
     ShoppingCart getByUser(User user);
 
     void registerCart(User user);
+
+    void clear(ShoppingCart shoppingCart);
 }
