@@ -1,6 +1,6 @@
 package com.dev.cinema;
 
-import com.dev.cinema.lib.Injector;
+import com.dev.cinema.config.AppConfig;
 import com.dev.cinema.model.CinemaHall;
 import com.dev.cinema.model.Movie;
 import com.dev.cinema.model.MovieSession;
@@ -16,18 +16,16 @@ import com.dev.cinema.service.UserService;
 import java.time.LocalDateTime;
 import java.time.Month;
 import javax.naming.AuthenticationException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main {
-    private static final Injector INJECTOR = Injector.getInstance("com.dev.cinema");
-    private static final Logger LOGGER = LogManager.getLogger(Main.class);
-
     public static void main(String[] args) throws AuthenticationException {
-        MovieService movieService = (MovieService) INJECTOR.getInstance(MovieService.class);
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext(AppConfig.class);
 
         Movie movie = new Movie();
         movie.setTitle("Terminator 2");
+        var movieService = context.getBean(MovieService.class);
         movie = movieService.add(movie);
 
         movieService.getAll().forEach(System.out::println);
@@ -38,29 +36,28 @@ public class Main {
         var greenHall = new CinemaHall();
         greenHall.setCapacity(400);
         greenHall.setDescription("Students Only");
-        var cinemaHallService =
-                (CinemaHallService) INJECTOR.getInstance(CinemaHallService.class);
+        var cinemaHallService = context.getBean(CinemaHallService.class);
         cinemaHallService.add(blueHall);
         cinemaHallService.add(greenHall);
         MovieSession movieSession = new MovieSession();
         movieSession.setCinemaHall(greenHall);
         movieSession.setMovie(movie);
         movieSession.setSessionTime(LocalDateTime.of(2020, Month.MAY, 30, 15, 30));
-        MovieSessionService movieSessionService =
-                (MovieSessionService) INJECTOR.getInstance(MovieSessionService.class);
+        var movieSessionService =
+                context.getBean(MovieSessionService.class);
         movieSessionService.add(movieSession);
 
-        UserService userService = (UserService) INJECTOR.getInstance(UserService.class);
+        var userService = context.getBean(UserService.class);
 
-        AuthenticationService registration =
-                (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
+        var registration =
+                context.getBean(AuthenticationService.class);
         User john = registration.registration("John123@ll.com", "1");
         registration.login("John123@ll.com", "1");
-        ShoppingCartService shoppingCartService =
-                (ShoppingCartService) INJECTOR.getInstance(ShoppingCartService.class);
+        var shoppingCartService =
+                context.getBean(ShoppingCartService.class);
 
         OrderService orderService =
-                (OrderService) INJECTOR.getInstance(OrderService.class);
+                context.getBean(OrderService.class);
         ShoppingCart cart = shoppingCartService.getByUser(john);
         orderService.completeOrder(cart.getTickets(), john);
         shoppingCartService.clear(cart);
