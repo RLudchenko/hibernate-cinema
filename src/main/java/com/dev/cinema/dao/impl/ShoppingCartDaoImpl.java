@@ -2,25 +2,28 @@ package com.dev.cinema.dao.impl;
 
 import com.dev.cinema.dao.ShoppingCartDao;
 import com.dev.cinema.exceptions.DataProcessingException;
-import com.dev.cinema.lib.Dao;
 import com.dev.cinema.model.ShoppingCart;
 import com.dev.cinema.model.User;
-import com.dev.cinema.util.HibernateUtil;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-@Dao
+@Repository
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
     private static final Logger LOGGER = LogManager.getLogger(UserDaoImpl.class);
+    @Autowired
+    private SessionFactory sessionFactory;
 
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
@@ -40,7 +43,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public ShoppingCart getByUser(User user) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             var cb = session.getCriteriaBuilder();
             CriteriaQuery<ShoppingCart> shoppingCartCriteriaQuery
                     = cb.createQuery(ShoppingCart.class);
@@ -57,7 +60,7 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     @Override
     public void update(ShoppingCart shoppingCart) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
