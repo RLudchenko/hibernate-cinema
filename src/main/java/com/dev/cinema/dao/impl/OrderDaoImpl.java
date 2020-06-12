@@ -5,6 +5,10 @@ import com.dev.cinema.exceptions.DataProcessingException;
 import com.dev.cinema.model.Order;
 import com.dev.cinema.model.User;
 import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -38,6 +42,23 @@ public class OrderDaoImpl implements OrderDao {
             throw new DataProcessingException("There was an error adding ", e);
         } finally {
             session.close();
+        }
+    }
+
+    @Override
+    public Order getOrderById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Order> criteriaQuery = criteriaBuilder
+                    .createQuery(Order.class);
+            Root<Order> sessionRoot = criteriaQuery.from(Order.class);
+            Predicate predicate = criteriaBuilder
+                    .equal(sessionRoot.get("id"), id);
+            criteriaQuery.select(sessionRoot).where(predicate);
+            return session.createQuery(criteriaQuery).uniqueResult();
+        } catch (Exception e) {
+            throw new DataProcessingException(
+                    "An Error Occurred While Retrieving Order by Id! " + id, e);
         }
     }
 

@@ -4,8 +4,10 @@ import com.dev.cinema.dao.ShoppingCartDao;
 import com.dev.cinema.exceptions.DataProcessingException;
 import com.dev.cinema.model.ShoppingCart;
 import com.dev.cinema.model.User;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,6 +57,24 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             return session.createQuery(shoppingCartCriteriaQuery).uniqueResult();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get shoppingCart by user " + user, e);
+        }
+    }
+
+    @Override
+    public ShoppingCart getCartById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<ShoppingCart> criteriaQuery = criteriaBuilder
+                    .createQuery(ShoppingCart.class);
+            Root<ShoppingCart> sessionRoot = criteriaQuery.from(ShoppingCart.class);
+            Predicate predicate = criteriaBuilder
+                    .equal(sessionRoot.get("id"), id);
+            sessionRoot.fetch("tickets", JoinType.LEFT);
+            criteriaQuery.select(sessionRoot).where(predicate);
+            return session.createQuery(criteriaQuery).getSingleResult();
+        } catch (Exception e) {
+            throw new DataProcessingException(
+                    "An Error Occurred While Retrieving Cart by Id! " + id, e);
         }
     }
 

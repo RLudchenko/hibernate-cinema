@@ -6,19 +6,21 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HashUtil {
     private static final Logger LOGGER = LogManager.getLogger(UserDaoImpl.class);
     private static final String hasher = "SHA-512";
 
-    public static byte[] getSalt() {
+    public byte[] getSalt() {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt);
         return salt;
     }
 
-    public static String hashPassword(String password, byte[] salt) {
+    public String hashPassword(String password, byte[] salt) {
         StringBuilder hashedPassword = new StringBuilder();
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(hasher);
