@@ -25,35 +25,36 @@ public class Main {
 
         Movie movie = new Movie();
         movie.setTitle("Terminator 2");
-        var movieService = context.getBean(MovieService.class);
+        MovieService movieService = context.getBean(MovieService.class);
         movie = movieService.add(movie);
 
         movieService.getAll().forEach(System.out::println);
 
-        var blueHall = new CinemaHall();
+        CinemaHall blueHall = new CinemaHall();
         blueHall.setCapacity(50);
         blueHall.setDescription("Premium hall");
-        var greenHall = new CinemaHall();
+        CinemaHall greenHall = new CinemaHall();
         greenHall.setCapacity(400);
         greenHall.setDescription("Students Only");
-        var cinemaHallService = context.getBean(CinemaHallService.class);
+        CinemaHallService cinemaHallService = context.getBean(CinemaHallService.class);
         cinemaHallService.add(blueHall);
         cinemaHallService.add(greenHall);
         MovieSession movieSession = new MovieSession();
         movieSession.setCinemaHall(greenHall);
         movieSession.setMovie(movie);
         movieSession.setSessionTime(LocalDateTime.of(2020, Month.MAY, 30, 15, 30));
-        var movieSessionService =
+
+        MovieSessionService movieSessionService =
                 context.getBean(MovieSessionService.class);
         movieSessionService.add(movieSession);
 
-        var userService = context.getBean(UserService.class);
+        UserService userService = context.getBean(UserService.class);
 
-        var registration =
+        AuthenticationService registration =
                 context.getBean(AuthenticationService.class);
         User john = registration.registration("John123@ll.com", "1");
         registration.login("John123@ll.com", "1");
-        var shoppingCartService =
+        ShoppingCartService shoppingCartService =
                 context.getBean(ShoppingCartService.class);
 
         OrderService orderService =

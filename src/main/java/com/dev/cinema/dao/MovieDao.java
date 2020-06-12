@@ -6,5 +6,7 @@ import java.util.List;
 public interface MovieDao {
     Movie add(Movie movie);
 
+    Movie getMovieById(Long id);
+
     List<Movie> getAll();
 }

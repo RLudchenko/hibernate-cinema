@@ -4,7 +4,10 @@ import com.dev.cinema.dao.MovieDao;
 import com.dev.cinema.exceptions.DataProcessingException;
 import com.dev.cinema.model.Movie;
 import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -35,6 +38,23 @@ public class MovieDaoImpl implements MovieDao {
             if (session != null) {
                 session.close();
             }
+        }
+    }
+
+    @Override
+    public Movie getMovieById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Movie> criteriaQuery = criteriaBuilder
+                    .createQuery(Movie.class);
+            Root<Movie> sessionRoot = criteriaQuery.from(Movie.class);
+            Predicate predicate = criteriaBuilder
+                    .equal(sessionRoot.get("id"), id);
+            criteriaQuery.select(sessionRoot).where(predicate);
+            return session.createQuery(criteriaQuery).uniqueResult();
+        } catch (Exception e) {
+            throw new DataProcessingException(
+                    "An Error Occurred While Retrieving Movie by Id! " + id, e);
         }
     }
 
