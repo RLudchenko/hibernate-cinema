@@ -1,7 +1,6 @@
 package com.dev.cinema.annotation;
 
 import com.dev.cinema.model.dto.UserRequestDto;
-import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 public class PasswordValidator {
