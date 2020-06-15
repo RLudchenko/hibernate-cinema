@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class UserRequestDto {
-    @NotNull(message = "Email field cannot be empty!")
+    @NotNull
     @Email
     private String email;
 

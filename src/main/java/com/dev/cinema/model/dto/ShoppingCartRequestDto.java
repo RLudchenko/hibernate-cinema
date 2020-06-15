@@ -1,7 +1,12 @@
 package com.dev.cinema.model.dto;
 
+import javax.validation.constraints.NotNull;
+
 public class ShoppingCartRequestDto {
+    @NotNull
     private Long movieSessionId;
+
+    @NotNull
     private Long userId;
 
     public Long getMovieSessionId() {
