@@ -1,5 +1,6 @@
-package com.dev.cinema.annotation;
+package com.dev.cinema.validator;
 
+import com.dev.cinema.annotation.EmailConstraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
