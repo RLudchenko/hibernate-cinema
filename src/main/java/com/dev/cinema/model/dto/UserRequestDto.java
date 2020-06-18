@@ -1,9 +1,11 @@
 package com.dev.cinema.model.dto;
 
 import com.dev.cinema.annotation.EmailConstraint;
+import com.dev.cinema.annotation.PasswordConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@PasswordConstraint
 public class UserRequestDto {
     @EmailConstraint
     private String email;
