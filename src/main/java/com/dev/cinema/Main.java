@@ -52,7 +52,7 @@ public class Main {
 
         AuthenticationService registration =
                 context.getBean(AuthenticationService.class);
-        User john = registration.registration("John123@ll.com", "1");
+        User john = registration.registration("jack@ll.com", "1");
         registration.login("John123@ll.com", "1");
         ShoppingCartService shoppingCartService =
                 context.getBean(ShoppingCartService.class);
