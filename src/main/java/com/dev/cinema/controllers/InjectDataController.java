@@ -6,11 +6,11 @@ import com.dev.cinema.service.RoleService;
 import com.dev.cinema.service.ShoppingCartService;
 import com.dev.cinema.service.UserService;
 import java.util.Set;
-import javax.annotation.PostConstruct;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class InjectDataController {
     private final RoleService roleService;
     private final ShoppingCartService shoppingCartService;
@@ -27,33 +27,26 @@ public class InjectDataController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostConstruct
-    public void init() {
-        injectRoles();
-        injectUsers();
-    }
-
-    private void injectRoles() {
+    @GetMapping("/inject")
+    public String injectData() {
         Role adminRole = new Role();
         adminRole.setRoleName(Role.RoleName.ADMIN);
         Role userRole = new Role();
         userRole.setRoleName(Role.RoleName.USER);
         roleService.add(adminRole);
         roleService.add(userRole);
-    }
-
-    private void injectUsers() {
         User admin = new User();
-        admin.setEmail("test@gmail.com");
+        admin.setEmail("admin@gmail.com");
         admin.setPassword(passwordEncoder.encode("1234"));
-        admin.setRoles(Set.of(roleService.getRoleByName("ADMIN")));
+        admin.setRoles(Set.of(adminRole));
         User user = new User();
         user.setEmail("john@gmail.com");
         user.setPassword(passwordEncoder.encode("1234"));
-        user.setRoles(Set.of(roleService.getRoleByName("USER")));
+        user.setRoles(Set.of(userRole));
         userService.add(admin);
         userService.add(user);
         shoppingCartService.registerCart(admin);
         shoppingCartService.registerCart(user);
+        return "Enjoy data from DB!";
     }
 }
