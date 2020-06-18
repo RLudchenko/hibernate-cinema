@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/registration")
+                .antMatchers("/registration", "/inject", "login")
                 .permitAll()
                 .antMatchers(HttpMethod.POST,"/orders/complete", "/shopping-carts/**")
                 .hasRole("USER")

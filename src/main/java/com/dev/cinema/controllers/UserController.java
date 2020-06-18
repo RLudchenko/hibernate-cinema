@@ -20,7 +20,7 @@ public class UserController {
         this.userDtoMapper = userDtoMapper;
     }
 
-    @GetMapping("/byemail")
+    @GetMapping("/by-email")
     public UserResponseDto getByEmail(Authentication authentication) {
         String emailLogin = authentication.getName();
         User user = userService.findByEmail(emailLogin);
