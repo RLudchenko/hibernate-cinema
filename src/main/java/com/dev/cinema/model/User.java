@@ -1,12 +1,12 @@
 package com.dev.cinema.model;
 
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,7 +19,14 @@ public class User {
     @Column(name = "email", unique = true)
     private String email;
     private String password;
-    private byte[] salt;
+    @ManyToMany
+    private Set<Role> roles;
+
+    public User(String email, String password, Set<Role> roles) {
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
 
     public User() {
     }
@@ -48,34 +55,12 @@ public class User {
         this.password = password;
     }
 
-    public byte[] getSalt() {
-        return salt;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setSalt(byte[] salt) {
-        this.salt = salt;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        User user = (User) o;
-        return Objects.equals(id, user.id)
-                && Objects.equals(email, user.email)
-                && Objects.equals(password, user.password)
-                && Arrays.equals(salt, user.salt);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(id, email, password);
-        result = 31 * result + Arrays.hashCode(salt);
-        return result;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override
@@ -84,7 +69,6 @@ public class User {
                 + "id=" + id
                 + ", email='" + email + '\''
                 + ", password='" + password + '\''
-                + ", salt=" + Arrays.toString(salt)
                 + '}';
     }
 }

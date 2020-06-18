@@ -33,9 +33,8 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            Long cinemaHallId = (Long) session.save(cinemaHall);
+            session.save(cinemaHall);
             transaction.commit();
-            cinemaHall.setId(cinemaHallId);
             LOGGER.info(cinemaHall + " was inserted to DB");
             return cinemaHall;
         } catch (Exception e) {

@@ -1,13 +1,14 @@
 package com.dev.cinema.model.dto;
 
-import javax.validation.constraints.Email;
+import com.dev.cinema.annotation.EmailConstraint;
+import com.dev.cinema.annotation.PasswordConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@PasswordConstraint
 public class UserRequestDto {
-    @Email
+    @EmailConstraint
     private String email;
-
     @NotNull(message = "Password cannot be empty!")
     @Size(min = 3, message = "Password must be greater or equal to 3!")
     private String password;

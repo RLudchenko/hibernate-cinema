@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -65,14 +66,12 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = sessionFactory.openSession()) {
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<User> criteriaQuery = criteriaBuilder
-                    .createQuery(User.class);
-            Root<User> sessionRoot = criteriaQuery.from(User.class);
-            Predicate predicate = criteriaBuilder
-                    .equal(sessionRoot.get("email"), email);
-            criteriaQuery.select(sessionRoot).where(predicate);
-            return Optional.ofNullable(session.createQuery(criteriaQuery).uniqueResult());
+            Query<User> query = session
+                    .createQuery("FROM User u "
+                            + "LEFT JOIN FETCH u.roles Role "
+                            + " WHERE u.email =: email", User.class);
+            query.setParameter("email", email);
+            return query.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException(
                     "An Error Occurred While Retrieving Email! " + email, e);
