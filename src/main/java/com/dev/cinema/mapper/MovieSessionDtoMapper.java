@@ -22,7 +22,7 @@ public class MovieSessionDtoMapper {
         MovieSession movieSession = new MovieSession();
         movieSession.setCinemaHall(cinemaHallService
                 .getCinemaHallById(movieSessionRequestDto.getCinemaHallId()));
-        movieSession.setSessionTime(movieSessionRequestDto.getSessionTime());
+        movieSession.setShowTime(movieSessionRequestDto.getSessionTime());
 
         return movieSession;
     }
@@ -32,7 +32,7 @@ public class MovieSessionDtoMapper {
         Movie movie = movieSession.getMovie();
         movieSessionResponseDto.setCinemaHallId(movieSession.getCinemaHall().getId());
         movieSessionResponseDto.setMovieId(movie.getId());
-        movieSessionResponseDto.setSessionTime(movieSession.getSessionTime());
+        movieSessionResponseDto.setSessionTime(movieSession.getShowTime());
 
         return movieSessionResponseDto;
     }
