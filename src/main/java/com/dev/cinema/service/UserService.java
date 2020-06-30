@@ -7,5 +7,5 @@ public interface UserService {
 
     User getUserById(Long id);
 
-    User findByEmail(String email);
+    User getByEmail(String email);
 }

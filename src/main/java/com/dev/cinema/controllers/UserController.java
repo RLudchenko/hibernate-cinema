@@ -23,7 +23,7 @@ public class UserController {
     @GetMapping("/by-email")
     public UserResponseDto getByEmail(Authentication authentication) {
         String emailLogin = authentication.getName();
-        User user = userService.findByEmail(emailLogin);
+        User user = userService.getByEmail(emailLogin);
 
         return userDtoMapper.userToDto(user);
     }

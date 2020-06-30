@@ -41,7 +41,7 @@ public class MovieSessionController {
                                                                      = DateTimeFormat.ISO.DATE)
                                                                      LocalDate sessionTime) {
         List<MovieSession> movieSessions =
-                movieSessionService.findSession(movieId, sessionTime);
+                movieSessionService.getSession(movieId, sessionTime);
 
         return movieSessions.stream()
                 .map(movieSessionDtoMapper::movieSessionToDto)

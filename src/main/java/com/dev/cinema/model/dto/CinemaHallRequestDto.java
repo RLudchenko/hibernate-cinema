@@ -4,7 +4,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class CinemaHallRequestDto {
-    @NotNull(message = "Capacity cannot be empty!")
     private int capacity;
 
     @NotNull(message = "description cannot be empty!")
