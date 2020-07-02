@@ -45,7 +45,7 @@ public class ShoppingCartController {
     @GetMapping("/by-user")
     public ShoppingCartResponseDto getByUserId(Authentication authentication) {
         String name = authentication.getName();
-        User byEmail = userService.findByEmail(name);
+        User byEmail = userService.getByEmail(name);
         return shoppingCartMapper.cartToDto(shoppingCartService
                 .getByUser(userService.getUserById(byEmail.getId())));
     }
